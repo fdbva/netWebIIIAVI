@@ -1,24 +1,148 @@
-﻿<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+﻿@section scripts {
+    @Scripts.Render("~/bundles/app")
+}
+
+<div class="page-header">
+    <h1>FornecedorService</h1>
 </div>
+
 <div class="row">
+
     <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-        a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-        is an ideal platform for building RESTful applications on the .NET Framework.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Produtos</h2>
+            </div>
+            <div class="panel-body">
+                <ul class="list-unstyled" data-bind="foreach: produtos">
+                    <li>
+                        <strong><span data-bind="text: Nome"></span></strong>: <span data-bind="text: Marca"></span>
+                        <small><a href="#" data-bind="click: $parent.getProdutoDetail">Details</a></small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="alert alert-danger" data-bind="visible: error"><p data-bind="text: error"></p></div>
     </div>
+
+    <!-- ko if:produtoDetail() -->
+
     <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Produto Detail</h2>
+            </div>
+            <table class="table">
+                <tr><td>Nome</td><td data-bind="text: produtoDetail().Nome"></td></tr>
+                <tr><td>Marca</td><td data-bind="text: produtoDetail().Marca"></td></tr>
+                <tr><td>Estoque</td><td data-bind="text: produtoDetail().Estoque"></td></tr>
+                <tr><td>Preço</td><td data-bind="text: produtoDetail().Preco"></td></tr>
+                <tr><td>Fornecedor</td><td data-bind="text: produtoDetail().Fornecedor.Nome"></td></tr>
+            </table>
+        </div>
     </div>
+
+    <!-- /ko -->
+
     <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Add Produto</h2>
+            </div>
+
+            <div class="panel-body">
+                <form class="form-horizontal" data-bind="submit: addProduto">
+
+                    <div class="form-group" data-bind="with: newProduto">
+                        <label for="inputNome" class="col-sm-2 control-label">Nome</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputNome" data-bind="value:Nome"/>
+                        </div>
+
+                        <label for="inputMarca" class="col-sm-2 control-label">Marca</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputMarca" data-bind="value:Marca" />
+                        </div>
+
+                        <label for="inputEstoque" class="col-sm-2 control-label">Estoque</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="inputEstoque" data-bind="value:Estoque"/>
+                        </div>
+
+                        <label for="inputPreco" class="col-sm-2 control-label">Preço</label>
+                        <div class="col-sm-10">
+                            <input type="number" step="any" class="form-control" id="inputPreco" data-bind="value:Preco"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputFornecedor" class="col-sm-2 control-label">Fornecedor</label>
+                        <div class="col-sm-10">
+                            <select data-bind="options:fornecedors, optionsText: 'Nome', value: newProduto.Fornecedor"></select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Fornecedores</h2>
+            </div>
+            <div class="panel-body">
+                <ul class="list-unstyled" data-bind="foreach: fornecedors">
+                    <li>
+                        <strong><span data-bind="text: Nome"></span></strong>: <span data-bind="text: CNPJ"></span>
+                        @*<small><a href="#" data-bind="click: $parent.getFornecedorDetail">Details</a></small>*@
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="alert alert-danger" data-bind="visible: error">
+            <p data-bind="text: error"></p>
+        </div>
+    </div>
+    @*<!-- ko if:fornecedorDetail() -->
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Fornecedor Detail</h2>
+            </div>
+            <table class="table">
+                <tr><td>Nome</td><td data-bind="text: fornecedorDetail().Nome"></td></tr>
+                <tr><td>CNPJ</td><td data-bind="text: fornecedorDetail().CNPJ"></td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- /ko -->*@
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Add Fornecedor</h2>
+            </div>
+
+            <div class="panel-body">
+                <form class="form-horizontal" data-bind="submit: addFornecedor">
+
+                    <div class="form-group" data-bind="with: newFornecedor">
+                        <label for="inputNomeFornecedor" class="col-sm-2 control-label">Nome</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputNomeFornecedor" data-bind="value:Nome" />
+                        </div>
+
+                        <label for="inputCNPJ" class="col-sm-2 control-label">CNPJ</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputCNPJ" data-bind="value:CNPJ" />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
